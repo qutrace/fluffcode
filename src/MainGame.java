@@ -146,11 +146,14 @@ class MainGame
     }
     private void sleep(long l)
     {
-        try {
-            Thread.sleep(l);
-        }
-        catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
+       if (l > 0L)
+       {
+	    try {
+                Thread.sleep(l);
+            }
+            catch(InterruptedException ex) {
+            	Thread.currentThread().interrupt();
+            }
+       }
     }
 }
