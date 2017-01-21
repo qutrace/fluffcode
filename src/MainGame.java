@@ -38,6 +38,7 @@ class MainGame
     {
         _win = new ArrayList<Window>(10);
         _win.add(new Window());
+        _win.add(new Window());
     }
 
     private void loop()
