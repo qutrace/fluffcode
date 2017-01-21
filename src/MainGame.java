@@ -1,12 +1,13 @@
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
+import java.util.*;
 
 class MainGame
 {
 
     private static boolean TEST = true;
-    private Long _window;
-    private boolean _close;
+    private List<Window> _win;
+    private boolean _stop;
 
 
     public MainGame()
@@ -35,9 +36,10 @@ class MainGame
 
     private void init()
     {
-        init_glfw();
-        init_gl();
+        _win = new ArrayList<Window>(10);
+        _win.add(new Window());
     }
+
     private void loop()
     {
         long startTime;
@@ -45,115 +47,71 @@ class MainGame
         int fps = 30;
         long targetTime = 1000L / fps;
 
-        while (!_close)
+        while (!_stop)
         {
             startTime = System.currentTimeMillis();
-            update();
-            draw();
-
-            //currently crashes monitor
-            //GLFW.glfwSwapBuffers(_window);
-
-            GLFW.glfwPollEvents();
-
-            checkCloseCondition();
+            step();
+            checkStopCondition();
 
             endTime = System.currentTimeMillis();
             sleep(startTime + targetTime - endTime);
         }
     }
+
     private void terminate()
     {
         if (TEST)
         {
             System.out.println("Terminating");
         }
-        terminate_glfw();
-    }
 
-
-    private void init_glfw()
-    {
-        //Needs org.lwjgl.glfw import
-        //create error callback
-        GLFWErrorCallback errorCallback;
-        errorCallback = GLFWErrorCallback.createPrint(System.err);
-
-        //alternatively, import static org.lwjgl.glfw.GLFW.*;
-        //set error Callback
-        GLFW.glfwSetErrorCallback(errorCallback);
-        if( !GLFW.glfwInit())
+        for (int i = 0; i < _win.size(); i++)
         {
-            String glfwErrMsg = "Unable to initialize glfw";
-            throw new IllegalStateException(glfwErrMsg);
+            _win.get(i).terminate();
         }
-
-        //set window parameters
-        String title = "MyTitle"; //must be not null
-        boolean resize = true;
-        int resizable = resize ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE;
-        int m_width = 1027;
-        int m_height = 800;
-
-        //Loads GLFW's default window settings
-        GLFW.glfwDefaultWindowHints();
-        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_TRUE);
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, resizable);
-
-        //Create Window Handle
-        _window = GLFW.glfwCreateWindow(m_width, m_height, title, 0, 0);
-        if (_window == null)
-        {
-            String windowErrMsg = "Failed to create window";
-            throw new RuntimeException(windowErrMsg);
-        }
-    }
-    private void init_gl()
-    {
-
-    }
-    private void terminate_glfw()
-    {
-        // Free the window callbacks and destroy the window
-        //org.lwjgl.glfw.Callbacks
-        Callbacks.glfwFreeCallbacks(_window);
-        GLFW.glfwDestroyWindow(_window);
 
         // Terminate GLFW and free the error callback
         GLFW.glfwTerminate();
         GLFW.glfwSetErrorCallback(null).free();
     }
-    private void terminate_gl()
+
+    private void step()
     {
-
-    }
-
-    private void update()
-    {
-
-    }
-    private void draw()
-    {
-
-    }
-
-    private void checkCloseCondition()
-    {
-        if (GLFW.glfwWindowShouldClose(_window))
+        //update windows
+        for (int i = 0; i < _win.size(); i++)
         {
-            _close = true;
+            _win.get(i).step();
+        }
+
+        //remove closed windows
+        for (int i = _win.size() - 1; i >= 0; i--)
+        {
+            if(_win.get(i).remove())
+            {
+                _win.remove(i);
+            }
         }
     }
+
+    private void checkStopCondition()
+    {
+          if (_win.isEmpty())
+        {
+            _stop = true;
+        }
+    }
+
     private void sleep(long l)
     {
-       if (l > 0L)
-       {
-	    try {
+        if (l > 0L)
+        {
+            try {
                 Thread.sleep(l);
             }
             catch(InterruptedException ex) {
-            	Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt();
             }
-       }
+        }
     }
+
 }
