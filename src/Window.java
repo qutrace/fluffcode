@@ -12,13 +12,20 @@ class Window
     private int _weit;
     private int _hoch;
     private FPStracker fps;
-    private Sprite blue;
+    private Room room;
 
     public Window()
     {
         init();
         fps = new FPStracker();
-        blue = ImageLoader.LoadImage("res/blue.png");
+        room = new Room(this);
+        room.add(new Wall(20,20));
+        room.add(new Player());
+    }
+
+    public Long handle()
+    {
+        return _windowHandle;
     }
 
     public void step()
@@ -150,10 +157,11 @@ class Window
     private void update()
     {
         fps.update();
+        room.update();
     }
     private void draw()
     {
         fps.draw();
-        blue.draw(10,10);
+        room.draw();
     }
 }

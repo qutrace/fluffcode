@@ -1,5 +1,10 @@
 ./src/MainGame.java
 ./src/handler/ImageLoader.java
 ./src/Window.java
+./src/ent/Wall.java
+./src/ent/Player.java
+./src/Room.java
 ./src/misc/FPStracker.java
+./src/misc/Hitbox.java
+./src/misc/BaseEntity.java
 ./src/misc/Sprite.java
