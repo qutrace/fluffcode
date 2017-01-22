@@ -41,4 +41,17 @@ abstract class BaseEntity
             return _hitbox.collides_with(e.get_hitbox());
         return false;
     }
+    public boolean place_meeting(int x, int y, BaseEntity e)
+    {
+        if (_hitbox != null)
+        {
+            return _hitbox.place_meeting(x,y, e.get_hitbox());
+        }
+        return false;
+    }
+
+    protected InputHandler input()
+    {
+        return _room.getWindow().get_inputHandler();
+    }
 }

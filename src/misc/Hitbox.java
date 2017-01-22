@@ -85,4 +85,27 @@ class Hitbox
         }
         return false;
     }
+
+    public boolean place_meeting(int nx,int ny, Hitbox h)
+    {
+        int ox = x;
+        int oy = y;
+        x = nx;
+        y = ny;
+        if (h == null)
+            return false;
+
+        if (right() > h.left() && left() < h.right())
+        {
+            if(bot() > h.top() && top() < h.bot())
+            {
+                x = ox;
+                y = oy;
+                return true;
+            }
+        }
+        x = ox;
+        y = oy;
+        return false;
+    }
 }

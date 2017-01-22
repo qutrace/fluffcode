@@ -2,6 +2,8 @@ import org.lwjgl.glfw.*;
 
 class Player extends BaseEntity
 {
+    public static int grav = 5;
+
     public Player()
     {
         _hitbox = hitbox(0,0);
@@ -10,17 +12,9 @@ class Player extends BaseEntity
 
     public void update()
     {
-        double[] x = new double[2];
-        double[] y = new double[2];
-        GLFW.glfwGetCursorPos(_room.getWindow().handle(),x,y);
-        //System.out.println("x: " + x[0]+ "y: " + y[0]);
-        _hitbox.set_x((int)x[0]);
-        _hitbox.set_y((int)y[0]);
-
-        if (_room.place_meeting(this))
-        {
-            _hitbox.set_xy(500,500);
-        }
+        set_x(input().getMouseX());
+        set_y(input().getMouseY());
+        
     }
 
     private static Hitbox hitbox(int x, int y)
@@ -29,5 +23,13 @@ class Player extends BaseEntity
         int h = 32;
 
         return new Hitbox(x,y, w, h,0,0);
+    }
+    private void set_x(int x)
+    {
+        _hitbox.set_x(x);
+    }
+    private void set_y(int y)
+    {
+        _hitbox.set_y(y);
     }
 }

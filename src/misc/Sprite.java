@@ -15,7 +15,7 @@ class Sprite
         _h = h;
         _fail = fail;
         _ready = !fail;
-        System.out.println("" + _id);
+        //System.out.println("" + _id);
     }
     public Sprite()
     {

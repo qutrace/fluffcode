@@ -11,6 +11,8 @@ class Window
 
     private int _weit;
     private int _hoch;
+
+    private InputHandler input;
     private FPStracker fps;
     private Room room;
 
@@ -18,9 +20,8 @@ class Window
     {
         init();
         fps = new FPStracker();
-        room = new Room(this);
-        room.add(new Wall(20,20));
-        room.add(new Player());
+        input = new InputHandler(this);
+        init_room();
     }
 
     public Long handle()
@@ -35,11 +36,11 @@ class Window
         init_gl();
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
+        GLFW.glfwPollEvents();
         update();
         draw();
 
-        GLFW.glfwPollEvents();
+
 
         GLFW.glfwSwapBuffers(_windowHandle);
 
@@ -115,6 +116,17 @@ class Window
         init_gl_projection();
     }
 
+    private void init_room()
+    {
+        room = new Room(this);
+        room.add(new Wall(20,20));
+        for(int i = 0; i < 20; i++)
+        {
+            room.add(new Wall(i * 32, 500));
+        }
+        room.add(new Player());
+    }
+
     private void init_gl_projection()
     {
         GL11.glViewport(0, 0, _weit, _hoch);
@@ -163,5 +175,10 @@ class Window
     {
         fps.draw();
         room.draw();
+    }
+
+    public InputHandler get_inputHandler()
+    {
+        return input;
     }
 }
