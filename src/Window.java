@@ -11,10 +11,12 @@ class Window
 
     private int _weit;
     private int _hoch;
+    private FPStracker fps;
 
     public Window()
     {
         init();
+        fps = new FPStracker();
     }
 
     public void step()
@@ -30,7 +32,6 @@ class Window
 
         GLFW.glfwPollEvents();
 
-        GLFW.glfwSwapBuffers(_windowHandle);
         GLFW.glfwSwapBuffers(_windowHandle);
 
         checkCloseCondition();
@@ -140,10 +141,10 @@ class Window
 
     private void update()
     {
-
+        fps.update();
     }
     private void draw()
     {
-
+        fps.draw();
     }
 }

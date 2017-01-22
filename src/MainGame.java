@@ -38,14 +38,14 @@ class MainGame
     {
         _win = new ArrayList<Window>(10);
         _win.add(new Window());
-        _win.add(new Window());
+        //_win.add(new Window());
     }
 
     private void loop()
     {
         long startTime;
         long endTime;
-        int fps = 30;
+        int fps = 60;
         long targetTime = 1000L / fps;
 
         while (!_stop)
@@ -79,9 +79,9 @@ class MainGame
     private void step()
     {
         //update windows
-        for (int i = 0; i < _win.size(); i++)
+        for(Window w : _win)
         {
-            _win.get(i).step();
+            w.step();
         }
 
         //remove closed windows
