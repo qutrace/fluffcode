@@ -1,4 +1,5 @@
 ./src/MainGame.java
-./src/handler/ImageLoder.java
+./src/handler/ImageLoader.java
 ./src/Window.java
-./src/FPStracker.java
+./src/misc/FPStracker.java
+./src/misc/Sprite.java

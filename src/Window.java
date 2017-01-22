@@ -12,11 +12,13 @@ class Window
     private int _weit;
     private int _hoch;
     private FPStracker fps;
+    private Sprite blue;
 
     public Window()
     {
         init();
         fps = new FPStracker();
+        blue = ImageLoader.LoadImage("res/blue.png");
     }
 
     public void step()
@@ -115,6 +117,12 @@ class Window
         GL11.glLoadIdentity();
         GL11.glOrtho(0, _weit , _hoch, 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        int rect = ARBTextureRectangle.GL_TEXTURE_RECTANGLE_ARB;
+        GL11.glEnable(rect);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     private void terminate_glfw_window()
@@ -146,5 +154,6 @@ class Window
     private void draw()
     {
         fps.draw();
+        blue.draw(10,10);
     }
 }
